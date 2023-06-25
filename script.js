@@ -75,11 +75,46 @@ function checkUI() {
   }
 }
 
+function filterItems(e) {
+  const items = itemList.querySelectorAll("li");
+  const text = e.target.value.toLowerCase();
+
+  items.forEach((item) => {
+    // get the text, the first child is the text, textContent to get the text, no quotes
+    const itemName = item.firstChild.textContent.toLocaleLowerCase();
+
+    // if the text typed matches name
+    // return -1 if text is not in the text
+    if (itemName.indexOf(text) != -1) {
+      item.style.display = "flex";
+    } else {
+      item.style.display = "none";
+    }
+  });
+}
+
+function filterItems2(e) {
+  const items = itemList.querySelectorAll("li");
+  const filterText = e.target.value.toLowerCase();
+
+  items.forEach((item) => {
+    const itemName = item.textContent.toLowerCase();
+
+    if (itemName.includes(filterText)) {
+      item.style.display = "flex";
+    } else {
+      item.style.display = "none";
+    }
+  });
+}
+
 // event listeners
 itemForm.addEventListener("submit", addItem);
 
 itemList.addEventListener("click", removeItem);
 
 clearButton.addEventListener("click", clearItems);
+
+itemsFilter.addEventListener("input", filterItems2);
 
 checkUI();
