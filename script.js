@@ -2,6 +2,7 @@ const itemForm = document.getElementById("item-form");
 const itemInput = document.getElementById("item-input");
 const itemList = document.getElementById("item-list");
 const clearButton = document.getElementById("clear");
+const itemsFilter = document.getElementById("filter");
 
 function addItem(e) {
   e.preventDefault();
@@ -22,6 +23,8 @@ function addItem(e) {
   itemList.appendChild(li);
 
   itemInput.value = "";
+
+  checkUI();
 }
 
 function createButton(classes) {
@@ -41,15 +44,34 @@ function createIcon(classes) {
 
 function removeItem(e) {
   if (e.target.parentElement.classList.contains("remove-item")) {
-    // remove the list item, going up dom tree
-    e.target.parentElement.parentElement.remove();
+    if (confirm("Are you sure")) {
+      // remove the list item, going up dom tree
+      e.target.parentElement.parentElement.remove();
+
+      checkUI();
+    }
   }
 }
 
-function clearItems(e) {
+function clearItems() {
   // while the item list has a first child remove it
   while (itemList.firstChild) {
     itemList.removeChild(itemList.firstChild);
+  }
+
+  checkUI();
+}
+
+// checks the state of the ui/ see if there are items
+function checkUI() {
+  const items = itemList.querySelectorAll("li");
+
+  if (items.length === 0) {
+    clearButton.style.display = "none";
+    itemsFilter.style.display = "none";
+  } else {
+    clearButton.style.display = "block";
+    itemsFilter.style.display = "block";
   }
 }
 
@@ -59,3 +81,5 @@ itemForm.addEventListener("submit", addItem);
 itemList.addEventListener("click", removeItem);
 
 clearButton.addEventListener("click", clearItems);
+
+checkUI();
